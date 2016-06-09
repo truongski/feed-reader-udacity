@@ -53,14 +53,29 @@ $(function() {
          * hidden and shown states.
          */
         it('should toggle the menu', function () {
-            var initialState = $('body').hasClass('menu-hidden');
-
+            var closedState = 'matrix(1, 0, 0, 1, -192, 0)';
+            var openedState = 'matrix(1, 0, 0, 1, 0, 0)';
             var menuIcon = $('.menu-icon-link');
-            menuIcon.trigger('click');
-            expect($('body').hasClass('menu-hidden')).toBe(!initialState);
 
+            function getNextState() {
+                return $('.slide-menu').css('transform') == closedState ? openedState : closedState;
+            }
+
+            var nextState = getNextState();
+            
+            // Click, then wait for transition before checking
             menuIcon.trigger('click');
-            expect($('body').hasClass('menu-hidden')).toBe(initialState);
+            setTimeout(function () {
+                expect($('.slide-menu').css('transform')).toEqual(nextState);
+
+                nextState = getNextState();
+
+                // Click, then wait for transition before checking
+                menuIcon.trigger('click');
+                setTimeout(function () {
+                    expect($('.slide-menu').css('transform')).toEqual(nextState);
+                }, 500);
+            }, 500);
         });
     });
 
@@ -74,9 +89,9 @@ $(function() {
 
         /*
          * There is at least 1 entry in the feed when loadFeed is called
+         * Commenting out container.append(entryTemplate(entry)); in app.js will cause this to fail.
          */
         it('should have entries in the feed container', function () {
-            expect($('.feed .entry')).toBeDefined();
             expect($('.feed .entry').length).toBeGreaterThan(0);
         });
     });
