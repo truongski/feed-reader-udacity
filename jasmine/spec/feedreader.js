@@ -53,29 +53,22 @@ $(function() {
          * hidden and shown states.
          */
         it('should toggle the menu', function () {
-            var closedState = 'matrix(1, 0, 0, 1, -192, 0)';
-            var openedState = 'matrix(1, 0, 0, 1, 0, 0)';
             var menuIcon = $('.menu-icon-link');
+            var body = $('body');
 
-            function getNextState() {
-                return $('.slide-menu').css('transform') == closedState ? openedState : closedState;
+            function isMenuHidden() {
+                return body.hasClass('menu-hidden');
             }
-
-            var nextState = getNextState();
             
-            // Click, then wait for transition before checking
+            var nextState = !isMenuHidden();
+            
             menuIcon.trigger('click');
-            setTimeout(function () {
-                expect($('.slide-menu').css('transform')).toEqual(nextState);
+            expect(isMenuHidden()).toBe(nextState);
 
-                nextState = getNextState();
+            nextState = !isMenuHidden();
 
-                // Click, then wait for transition before checking
-                menuIcon.trigger('click');
-                setTimeout(function () {
-                    expect($('.slide-menu').css('transform')).toEqual(nextState);
-                }, 500);
-            }, 500);
+            menuIcon.trigger('click');
+            expect(isMenuHidden()).toBe(nextState);
         });
     });
 
