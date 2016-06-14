@@ -62,20 +62,12 @@ $(function() {
             }
 
             var nextState = getNextState();
-            
-            // Click, then wait for transition before checking
             menuIcon.trigger('click');
-            setTimeout(function () {
-                expect($('.slide-menu').css('transform')).toEqual(nextState);
+            expect($('.slide-menu').css('transform')).toEqual(nextState);
 
-                nextState = getNextState();
-
-                // Click, then wait for transition before checking
-                menuIcon.trigger('click');
-                setTimeout(function () {
-                    expect($('.slide-menu').css('transform')).toEqual(nextState);
-                }, 500);
-            }, 500);
+            nextState = getNextState();
+            menuIcon.trigger('click');
+            expect($('.slide-menu').css('transform')).toEqual(nextState);
         });
     });
 
