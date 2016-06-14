@@ -53,21 +53,22 @@ $(function() {
          * hidden and shown states.
          */
         it('should toggle the menu', function () {
-            var closedState = 'matrix(1, 0, 0, 1, -192, 0)';
-            var openedState = 'matrix(1, 0, 0, 1, 0, 0)';
             var menuIcon = $('.menu-icon-link');
+            var body = $('body');
 
-            function getNextState() {
-                return $('.slide-menu').css('transform') == closedState ? openedState : closedState;
+            function isMenuHidden() {
+                return body.hasClass('menu-hidden');
             }
 
-            var nextState = getNextState();
-            menuIcon.trigger('click');
-            expect($('.slide-menu').css('transform')).toEqual(nextState);
+            var nextState = !isMenuHidden();
 
-            nextState = getNextState();
             menuIcon.trigger('click');
-            expect($('.slide-menu').css('transform')).toEqual(nextState);
+            expect(isMenuHidden()).toBe(nextState);
+
+            nextState = !isMenuHidden();
+
+            menuIcon.trigger('click');
+            expect(isMenuHidden()).toBe(nextState);
         });
     });
 
